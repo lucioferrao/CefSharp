@@ -124,8 +124,13 @@ namespace CefSharp
         return Convert::ChangeType(value, conversionType);
     }
 
-    bool BindingHandler::Execute(const CefString& name, CefRefPtr<CefV8Value> object, const CefV8ValueList& arguments, CefRefPtr<CefV8Value>& retval, CefString& exception)
+    bool BindingHandler::_Execute(const CefString* const _name, CefRefPtr<CefV8Value> object, const CefV8ValueList* const _arguments, CefRefPtr<CefV8Value>* const _retval, CefString* const _exception)
     {
+        const CefString& name = *_name;
+        const CefV8ValueList& arguments = *_arguments;
+        CefRefPtr<CefV8Value>& retval = *_retval;
+        CefString& exception = *_exception;
+
         CefRefPtr<BindingData> bindingData = static_cast<BindingData*>(object->GetUserData().get());
         Object^ self = bindingData->Get();
         if(self == nullptr) 
@@ -242,6 +247,15 @@ namespace CefSharp
             exception = toNative("Argument mismatch for method \"" + memberName + "\".");
         }
         return true;
+    }
+
+    bool BindingHandler::Execute(const CefString& name, CefRefPtr<CefV8Value> object, const CefV8ValueList& arguments, CefRefPtr<CefV8Value>& retval, CefString& exception)
+    {
+        if (IsCrossDomainCallRequired()) {
+            return msclr::call_in_appdomain(GetAppDomainId(), &_Execute, &name, object, &arguments, &retval, &exception);
+        } else {
+            return _Execute(&name, object, &arguments, &retval, &exception);
+        }
     }
 
     void BindingHandler::Bind(String^ name, Object^ obj, CefRefPtr<CefV8Value> window)
