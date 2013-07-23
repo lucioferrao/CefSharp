@@ -23,7 +23,7 @@ namespace CefSharp
         ISchemeHandler^ Create();
     };
 
-    class SchemeHandlerWrapper : public CefSchemeHandler
+    class SchemeHandlerWrapper : public CefSchemeHandler, public AppDomainSafeCefBase
     {
         gcroot<ISchemeHandler^> _handler;
         gcroot<Stream^> _stream;
@@ -46,10 +46,10 @@ namespace CefSharp
         virtual void Cancel();
 
         IMPLEMENT_LOCKING(SchemeHandlerWrapper);
-        IMPLEMENT_REFCOUNTING(SchemeHandlerWrapper);
+        IMPLEMENT_SAFE_REFCOUNTING(SchemeHandlerWrapper);
     };
 
-    class SchemeHandlerFactoryWrapper : public CefSchemeHandlerFactory
+    class SchemeHandlerFactoryWrapper : public CefSchemeHandlerFactory, public AppDomainSafeCefBase
     {
         gcroot<ISchemeHandlerFactory^> _factory;
 
@@ -59,6 +59,6 @@ namespace CefSharp
 
         virtual CefRefPtr<CefSchemeHandler> Create(CefRefPtr<CefBrowser> browser, const CefString& scheme_name, CefRefPtr<CefRequest> request);
 
-        IMPLEMENT_REFCOUNTING(SchemeHandlerFactoryWrapper);
+        IMPLEMENT_SAFE_REFCOUNTING(SchemeHandlerFactoryWrapper);
     };
 }
