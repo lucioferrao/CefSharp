@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Stdafx.h"
 
 #include "IRenderWebBrowser.h"
 #include "RenderClientAdapter.h"
@@ -21,7 +21,7 @@ namespace CefSharp
 
     void RenderClientAdapter::_OnPopupSize(RenderClientAdapter* const _this, const CefRect* const _rect)
     {
-        _this->_renderBrowserControl->SetPopupSizeAndPosition(*_rect);
+        _this->_renderBrowserControl->SetPopupSizeAndPosition((void*) &_rect);
     }
 
     void RenderClientAdapter::OnPopupSize(CefRefPtr<CefBrowser> browser, const CefRect& rect)
@@ -71,7 +71,7 @@ namespace CefSharp
 
     void RenderClientAdapter::_SetCursor(RenderClientAdapter* const _this, CefCursorHandle cursor)
     {
-        _this->_renderBrowserControl->SetCursor(cursor);
+        _this->_renderBrowserControl->SetCursor((IntPtr)cursor);
     }
 
     void RenderClientAdapter::OnCursorChange(CefRefPtr<CefBrowser> browser, CefCursorHandle cursor)
