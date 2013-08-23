@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 #pragma once
-#define CHANGE_FIRST_CHAR_TO_LOWER // comment out this if want to keep the orignal case of methods and properties
+// #define CHANGE_FIRST_CHAR_TO_LOWER // comment out this if want to keep the orignal case of methods and properties
 
 using namespace System::Collections::Generic;
 using namespace System::Reflection;
