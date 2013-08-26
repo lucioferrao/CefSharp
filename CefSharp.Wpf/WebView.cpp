@@ -49,7 +49,7 @@ namespace Wpf
 
     bool WebView::TryGetCefBrowser(CefRefPtr<CefBrowser>& browser)
     {
-        if (_browserCore->IsBrowserInitialized)
+        if (_browserCore->IsBrowserInitialized && !_unloaded)
         {
             browser = _clientAdapter->GetCefBrowser();
             return browser != nullptr;
@@ -819,6 +819,7 @@ namespace Wpf
             _source = nullptr;
             _hook = nullptr;
         }
+		_unloaded = true;
     }
 
     void WebView::OnPopupMouseMove(Object^ sender, MouseEventArgs^ e)
