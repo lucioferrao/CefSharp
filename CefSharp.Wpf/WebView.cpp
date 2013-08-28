@@ -228,20 +228,7 @@ namespace Wpf
 
     void WebView::OnVisualParentChanged(DependencyObject^ oldParent)
     {
-        EventHandler^ _handler = gcnew EventHandler(this, &WebView::OnHidePopup);
-
-        if (_currentWindow != nullptr)
-        {
-			_currentWindow->LocationChanged -= _handler;
-			_currentWindow->Deactivated -= _handler;
-        }
-
-        _currentWindow = Window::GetWindow(this);
-        if (_currentWindow != nullptr)
-        {
-            _currentWindow->LocationChanged += _handler;
-            _currentWindow->Deactivated += _handler;
-        }
+		RegisterWindowHandlers();
 
         ContentControl::OnVisualParentChanged(oldParent);
     }
@@ -819,6 +806,9 @@ namespace Wpf
             _source = nullptr;
             _hook = nullptr;
         }
+
+		RegisterWindowHandlers(); // clear handlers
+
 		_unloaded = true;
     }
 
@@ -877,4 +867,22 @@ namespace Wpf
 			}
         }
     }
+
+	void WebView::RegisterWindowHandlers() 
+	{
+		EventHandler^ _handler = gcnew EventHandler(this, &WebView::OnHidePopup);
+
+		if (_currentWindow != nullptr)
+		{
+			_currentWindow->LocationChanged -= _handler;
+			_currentWindow->Deactivated -= _handler;
+		}
+
+		_currentWindow = Window::GetWindow(this);
+		if (_currentWindow != nullptr)
+		{
+			_currentWindow->LocationChanged += _handler;
+			_currentWindow->Deactivated += _handler;
+		}
+	}
 }}

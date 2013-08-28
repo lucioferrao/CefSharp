@@ -92,6 +92,8 @@ namespace Wpf
 
         void HidePopup();
         void AddSourceHook();
+
+		void RegisterWindowHandlers();
 		
     protected:
         virtual void OnVisualParentChanged(DependencyObject^ oldParent) override;
