@@ -49,7 +49,7 @@ namespace CefSharp
 
         bool WebView::TryGetCefBrowser(CefRefPtr<CefBrowser>& browser)
         {
-            if (_browserCore->IsBrowserInitialized)
+            if (_browserCore->IsBrowserInitialized && !_unloaded)
             {
                 browser = _clientAdapter->GetCefBrowser();
                 return browser != nullptr;
@@ -811,6 +811,10 @@ namespace CefSharp
         void WebView::OnLoaded(Object^ sender, RoutedEventArgs^ e)
         {
             AddSourceHook();
+
+		    RegisterWindowHandlers(); // clear handlers
+
+		    _unloaded = true;
         }
 
         void WebView::OnUnloaded(Object^ sender, RoutedEventArgs^ e)
@@ -878,4 +882,22 @@ namespace CefSharp
                 }
             }
         }
+        
+        void WebView::RegisterWindowHandlers() 
+        {
+		    EventHandler^ _handler = gcnew EventHandler(this, &WebView::OnHidePopup);
+
+		    if (_currentWindow != nullptr)
+		    {
+			    _currentWindow->LocationChanged -= _handler;
+			    _currentWindow->Deactivated -= _handler;
+		    }
+
+		    _currentWindow = Window::GetWindow(this);
+		    if (_currentWindow != nullptr)
+		    {
+			    _currentWindow->LocationChanged += _handler;
+			    _currentWindow->Deactivated += _handler;
+		    }
+	    }
     }}

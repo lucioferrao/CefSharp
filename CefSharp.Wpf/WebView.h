@@ -57,6 +57,8 @@ namespace CefSharp
 
             Window^ _currentWindow;
 
+		    bool _unloaded;
+
             void Initialize(String^ address, BrowserSettings^ settings);
             bool TryGetCefBrowser(CefRefPtr<CefBrowser>& browser);
             void BrowserCore_PropertyChanged(Object^ sender, PropertyChangedEventArgs^ e);
@@ -90,6 +92,8 @@ namespace CefSharp
 
             void HidePopup();
             void AddSourceHook();
+
+		void RegisterWindowHandlers();
 
         public protected: // a.k.a protected internal
             virtual void OnVisualParentChanged(DependencyObject^ oldParent) override;

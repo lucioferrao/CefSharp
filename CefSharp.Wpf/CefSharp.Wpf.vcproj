@@ -141,6 +141,7 @@
 				AdditionalLibraryDirectories="$(SolutionDir)libs\$(ConfigurationName);$(SolutionDir)CefSharp\bin\$(ConfigurationName)"
 				GenerateDebugInformation="false"
 				TargetMachine="1"
+				KeyFile="CefSharp.Wpf.snk"
 			/>
 			<Tool
 				Name="VCALinkTool"
