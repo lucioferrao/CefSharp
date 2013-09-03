@@ -811,10 +811,6 @@ namespace CefSharp
         void WebView::OnLoaded(Object^ sender, RoutedEventArgs^ e)
         {
             AddSourceHook();
-
-		    RegisterWindowHandlers(); // clear handlers
-
-		    _unloaded = true;
         }
 
         void WebView::OnUnloaded(Object^ sender, RoutedEventArgs^ e)
@@ -825,6 +821,10 @@ namespace CefSharp
                 _source = nullptr;
                 _hook = nullptr;
             }
+
+		    RegisterWindowHandlers(); // clear handlers
+
+		    _unloaded = true;
         }
 
         void WebView::OnPopupMouseMove(Object^ sender, MouseEventArgs^ e)
